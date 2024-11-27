@@ -1,0 +1,15 @@
+name: NPM Publish
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  active-jenkins:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Activate Jenkins
+        run: |
+          # 보안상 ip로 막아놓았기 때문에 안됨
+          # Jenkins poll SCM으로 설정
+          # curl -i -X POST "http://momo:${{ secrets.JENKINS_USER_KEY }}@${{ secrets.JENKINS_SERVER_IP }}/job/chatbots/build?token=${{ secrets.JENKINS_TOKEN }}"
