@@ -1,0 +1,55 @@
+{
+  "description": "Line Notify 서비스 종료에 따른 대처..",
+  "publishConfig": {
+    "access": "public"
+  },
+  "workspaces": [
+    "packages/bots/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "sync:misc": "node scripts/sync-misc.js",
+    "sync:version": "node scripts/sync-version.js",
+    "sync:package-info": "node scripts/sync-package-info.js",
+    "sync": "npm-run-all sync:*",
+    "lerna:publish": "npm run prepublishOnly && lerna publish patch -y"
+  },
+  "keywords": [
+    "slack",
+    "bot",
+    "api",
+    "chatbot",
+    "messaging",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prjkmo112/chatbots.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prjkmo112/chatbots/issues"
+  },
+  "dependencies": {
+    "@slack/events-api": "^3.0.1",
+    "@slack/interactive-messages": "^2.0.2",
+    "@slack/web-api": "^6.8.1",
+    "@types/async": "^3.2.20",
+    "@types/body-parser": "^1.19.2",
+    "@types/deasync": "^0.1.2",
+    "async": "^3.2.4",
+    "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
+    "deasync": "^0.1.30",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "form-data": "^4.0.0",
+    "fs": "^0.0.1-security",
+    "moment": "^2.29.4"
+  },
+  "homepage": "https://github.com/prjkmo112/chatbots",
+  "devDependencies": {
+    "lerna": "^8.1.9",
+    "npm-run-all": "^4.1.5"
+  }
+}

@@ -1,0 +1,31 @@
+# editor
+.vscode
+
+# 소스
+*.ts
+*.d.ts.map
+*.tsbuildinfo
+!*.d.ts
+
+README.md
+
+*.tree
+
+package-lock.json
+
+# 테스트
+test
+
+node_modules
+tsconfig.json
+.prettierrc
+.eslintrc
+
+# 로그
+logs
+*.log
+npm-debug.log*
+
+# 환경변수
+.env
+.env.test

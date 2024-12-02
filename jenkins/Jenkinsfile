@@ -1,0 +1,113 @@
+// 추후에는 리버스 프록시 서버를 두어 해결하길 바람
+pipeline {
+    agent any
+
+    // triggers {
+    //     githubPush()
+    // }
+
+    environment {
+        OS = 'debian'
+        NODE_VERSION = '20'
+        NPM_TOKEN = credentials('npm_token_momojslife')
+        GITHUB_TOKEN = credentials('git-ptjkjm1')
+    }
+
+    options {
+        // timeout
+        timeout(time: 15, unit: "MINUTES")
+        // 동시 빌드 방지
+        disableConcurrentBuilds()
+        // 빌드 history 유지
+        // buildDiscarder(logRotator(numToKeepStr: '20'))
+    }
+
+    stages {
+        stage('Deploy module to NPM') {
+            tools {
+                nodejs "node ${NODE_VERSION}"
+            }
+
+            stages {
+                stage('Setup') {
+                    steps {
+                        // git checkout
+                        checkout scm
+
+                        // Git 설정
+                        sh """
+                            git config user.name 'Jenkins Bot'
+                            git config user.email 'jenkins@example.com'
+                        """
+
+                        // NPM 설정
+                        sh '''
+                            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+                        '''
+                    }
+                }
+
+                stage('Install Dependancies') {
+                    steps {
+                        // npm-run-all 설치
+                        sh 'npm i --save-dev npm-run-all'
+                    }
+                }
+                
+                stage('Build & Test') {
+                    // TODO: 검증 과정 필요할 듯.. (npm run lint, run test...)
+                    steps {
+                        sh 'npm run sync && npx lerna run build'
+                    }
+                }
+
+                stage('Branch Check') {
+                    steps {
+                        script {
+                            // BUILD URL 마스킹처리
+                            def BUILD_URL_MASKING = BUILD_URL.replaceAll(/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(:[0-9]+)?/, '(JENKINS)')
+
+                            // lerna.json에서 버전 추출
+                            def NEW_VERSION = "${sh(script: "node -p \"require('./lerna.json').version.split('.')[0]\"", returnStdout: true).trim()}"
+                            
+                            // 릴리즈 브랜치 찾기
+                            def RELEASE_BRANCH = sh(script: "git branch -r | grep release/v${NEW_VERSION} | sed 's/origin\\///g'", returnStdout: true).trim()
+                            
+                            // 브랜치 체크아웃 및 커밋
+                            sh "git checkout ${RELEASE_BRANCH}"
+                            sh "git add ."
+
+                            // 참고: https://blog.outsider.ne.kr/1513
+                            def commitMessage = """[Jenkins] [skip ci] commit 정리: update package
+
+    > Build url: ${BUILD_URL_MASKING}
+    > Job: ${JOB_NAME}
+    > Release branch: ${RELEASE_BRANCH}
+    > Version: ${NEW_VERSION}"""
+                            
+                            sh """
+                                git diff --staged --quiet || git commit -m "${commitMessage}"
+                            """
+                        }
+                    }
+                }
+
+                stage('Publish') {
+                    steps {
+                        sh '''
+                            npx lerna publish from-package -y
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'rm -f .npmrc'
+
+            cleanWs()
+        }
+    }
+}
