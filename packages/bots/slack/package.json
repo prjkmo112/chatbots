@@ -1,0 +1,49 @@
+{
+  "name": "@chat-bots/slack",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "momo <ptjkjm1@gmail.com>",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@slack/events-api": "^3.0.1",
+    "@slack/interactive-messages": "^2.0.2",
+    "@slack/web-api": "^6.8.1",
+    "@types/async": "^3.2.20",
+    "@types/body-parser": "^1.19.2",
+    "@types/deasync": "^0.1.5",
+    "async": "^3.2.4",
+    "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
+    "deasync": "^0.1.30",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "form-data": "^4.0.1",
+    "fs": "^0.0.1-security",
+    "moment": "^2.29.4"
+  },
+  "version": "0.0.11",
+  "gitHead": "127195bd3784ddf121ab15b3c5eef3333afbea70",
+  "keywords": [
+    "slack",
+    "bot",
+    "api",
+    "chatbot",
+    "messaging",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prjkmo112/chatbots.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prjkmo112/chatbots/issues"
+  }
+}

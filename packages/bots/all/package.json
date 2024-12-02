@@ -1,0 +1,34 @@
+{
+  "name": "@chat-bots/chatbot",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@chat-bots/slack": "file:../slack"
+  },
+  "version": "0.0.11",
+  "keywords": [
+    "slack",
+    "bot",
+    "api",
+    "chatbot",
+    "messaging",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prjkmo112/chatbots.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prjkmo112/chatbots/issues"
+  }
+}
