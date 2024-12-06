@@ -95,7 +95,7 @@ pipeline {
                 stage('Publish') {
                     steps {
                         sh '''
-                            npx lerna publish from-package -y
+                            npx lerna publish from-package --no-push -y
                         '''
                     }
                 }

@@ -11,10 +11,5 @@
     "forceConsistentCasingInFileNames": true,
     "composite": true
   },
-  "references": [
-    { "path": "./packages/bots/all" },
-    { "path": "./packages/bots/slack" },
-  ],
-  "files": [],
   "exclude": ["node_modules", "dist"]
 }

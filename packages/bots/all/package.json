@@ -13,7 +13,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@chat-bots/slack": "file:../slack"
+    "@chat-bots/slack": "file:../slack",
+    "@chat-bots/mattermost": "file:../mattermost"
   },
   "version": "0.0.11",
   "keywords": [

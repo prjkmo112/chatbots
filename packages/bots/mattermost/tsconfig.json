@@ -8,10 +8,7 @@
     "declarationMap": true,
     "sourceMap": false,
     "allowJs": true,
-    "paths": {
-      "@chat-bots/slack": ["../slack"],
-      "@chat-bots/mattermost": ["../mattermost"]
-    }
+    "esModuleInterop": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]
