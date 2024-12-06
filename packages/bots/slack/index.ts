@@ -8,6 +8,8 @@ import { SlackBlockInfo, SettedBlockKit, SlackBlockKitType_ActionsButton } from 
 
 type CommonMessageTypes = "very_important"|"important"|"normal";
 
+export { SlackBlockInfo, SettedBlockKit, SlackBlockKitType_ActionsButton, CommonMessageTypes };
+
 export class chatSlack {
     private bot_token: string;
     private slack_channel: string;
