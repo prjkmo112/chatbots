@@ -15,8 +15,6 @@
   "dependencies": {
     "axios": "^1.4.0",
     "deasync": "^0.1.30",
-    "@types/ws": "^8.5.13",
-    "@types/deasync": "^0.1.2",
     "ws": "^8.18.0"
   },
   "version": "0.0.11",
