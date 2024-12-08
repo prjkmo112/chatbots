@@ -9,7 +9,8 @@
     "outDir": "./dist",
     "removeComments": false,
     "forceConsistentCasingInFileNames": true,
-    "composite": true
+    "composite": true,
+    "esModuleInterop": true
   },
   "references": [
     { "path": "./packages/bots/all" },

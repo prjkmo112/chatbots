@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
-import deasync from "deasync";
-import { post_message_data, SendMessageOptions } from "./types/data";
+import * as deasync from "deasync";
+import WebSocket from "ws";
+import { InitWebSocketOptions, post_message_data, SendMessageOptions } from "./types/data";
 import { MM_API_POSTS } from "./types/api-response/posts";
 
 export { post_message_data, SendMessageOptions, MM_API_POSTS };
@@ -9,6 +10,7 @@ export class chatmm {
     private server_url: string;
     private bot_token: string;
     private channelid: string;
+    private ws: null|WebSocket;
 
     constructor(url:string, token:string, channelid:string) {
         this.server_url = url;
@@ -18,14 +20,6 @@ export class chatmm {
     
     public get url() : string {
         return this.server_url;
-    }
-    
-    public get VAL_token() : string {
-        return this.bot_token;
-    }
-
-    public set VAL_token(v : string) {
-        this.bot_token = v;
     }
     
     public get VAL_channel_id(): string {
@@ -85,5 +79,63 @@ export class chatmm {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
+    }
+
+    initWebSocket(options:InitWebSocketOptions) {
+        const ws_url = `ws://${new URL(this.server_url).host}/api/v4/websocket`;
+        this.ws = new WebSocket(ws_url);
+
+        if (!!options.messageHandler === false) {
+            options.messageHandler = async (post) => {
+                const message = post.message.toLowerCase();
+                this.channelid = post.channel_id;
+
+                if (message.includes('hello')) {
+                    await this.send({ msg: 'hello!' });
+                }
+            }
+        }
+
+        this.ws.on('open', () => {
+            console.log('WebSocket connection established');
+            // Authentication
+            this.ws.send(JSON.stringify({
+                seq: 1,
+                action: 'authentication_challenge',
+                data: { token: this.bot_token }
+            }));
+        })
+
+        this.ws.on('message', async (data:string) => {
+            const event = JSON.parse(data);
+
+            // Handle different event types
+            if (event.event === 'posted') {
+                const post = JSON.parse(event.data.post);
+                
+                // Ignore bot's own messages
+                if (post.user_id !== options.botId) {
+                    await options.messageHandler(post);
+                }
+            }
+        })
+
+        this.ws.on('error', (error) => {
+            if (!!options.fnErr)
+                options.fnErr(error);
+            else 
+                console.error('WebSocket error:', error);
+        })
+
+        this.ws.on('close', () => {
+            if (!!options.fnClose)
+                options.fnClose();
+            else
+                console.log('WebSocket connection closed');
+        })
+    }
+
+    closeWebSocket() {
+        this.ws.close();
     }
 }

@@ -7,3 +7,10 @@ export interface post_message_data {
 export interface SendMessageOptions {
     msg: string;
 }
+
+export interface InitWebSocketOptions {
+    botId?: string;
+    messageHandler?: (post:any) => Promise<void>;
+    fnErr?: (error:Error) => void;
+    fnClose?: () => void;
+}
