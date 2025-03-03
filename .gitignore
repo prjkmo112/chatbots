@@ -7,6 +7,8 @@ test*.Jenkinsfile
 
 dist/
 
+package-lock.json
+
 # 미완성 모듈
 cli/
 
