@@ -29,9 +29,13 @@
     "url": "https://github.com/prjkmo112/chatbots/issues"
   },
   "dependencies": {
-    "@types/async": "^3.2.20",
     "async": "^3.2.4",
+    "ws": "^8.18.0",
+    "deasync": "^0.1.30"
+  },
+  "devDependencies": {
+    "@types/deasync": "^0.1.2",
     "@types/ws": "8.5.4",
-    "ws": "^8.18.0"
+    "@types/async": "^3.2.20"
   }
 }
