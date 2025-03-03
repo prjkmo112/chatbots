@@ -35,7 +35,6 @@ pipeline {
 
                         // Git 설정
                         sh """
-                            git remote set-url origin "https://${GITHUB_TOKEN}@github.com/prjkmo112/chatbots.git"
                             git config user.name 'Jenkins Bot'
                             git config user.email 'jenkins@example.com'
                         """
@@ -67,7 +66,7 @@ pipeline {
                             VERSION=$(node -p "require('./lerna.json').version")
                             git checkout main
                             echo "Publishing version: $VERSION"
-                            npx lerna publish $VERSION -y
+                            npx lerna publish $VERSION --no-push -y
                         '''
                     }
                 }
