@@ -64,10 +64,9 @@ pipeline {
                     steps {
                         sh '''
                             VERSION=$(node -p "require('./lerna.json').version")
-                            echo "Publishing version: $VERSION"
                             git checkout main
-                            git tag -a "v$VERSION" -m "Release v$VERSION"
-                            npx lerna publish from-git --no-push -y
+                            echo "Publishing version: $VERSION"
+                            npx lerna publish $VERSION -y
                         '''
                     }
                 }
