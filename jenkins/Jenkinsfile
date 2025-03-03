@@ -1,4 +1,3 @@
-// 추후에는 리버스 프록시 서버를 두어 해결하길 바람
 pipeline {
     agent any
 
@@ -61,41 +60,14 @@ pipeline {
                     }
                 }
 
-                stage('Branch Check') {
-                    steps {
-                        script {
-                            // BUILD URL 마스킹처리
-                            def BUILD_URL_MASKING = BUILD_URL.replaceAll(/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+(:[0-9]+)?/, '(JENKINS)')
-
-                            // lerna.json에서 버전 추출
-                            def NEW_VERSION = "${sh(script: "node -p \"require('./lerna.json').version.split('.')[0]\"", returnStdout: true).trim()}"
-                            
-                            // 릴리즈 브랜치 찾기
-                            def RELEASE_BRANCH = sh(script: "git branch -r | grep release/v${NEW_VERSION} | sed 's/origin\\///g'", returnStdout: true).trim()
-                            
-                            // 브랜치 체크아웃 및 커밋
-                            sh "git checkout ${RELEASE_BRANCH}"
-                            sh "git add ."
-
-                            // 참고: https://blog.outsider.ne.kr/1513
-                            def commitMessage = """[Jenkins] [skip ci] commit 정리: update package
-
-    > Build url: ${BUILD_URL_MASKING}
-    > Job: ${JOB_NAME}
-    > Release branch: ${RELEASE_BRANCH}
-    > Version: ${NEW_VERSION}"""
-                            
-                            sh """
-                                git diff --staged --quiet || git commit -m "${commitMessage}"
-                            """
-                        }
-                    }
-                }
-
                 stage('Publish') {
                     steps {
                         sh '''
-                            npx lerna publish from-package --no-push -y
+                            VERSION=$(node -p "require('./lerna.json').version")
+                            echo "Publishing version: $VERSION"
+                            git checkout main
+                            git tag -a "v$VERSION" -m "Release v$VERSION"
+                            npx lerna publish from-git --no-push -y
                         '''
                     }
                 }
