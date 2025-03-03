@@ -1,5 +1,11 @@
 # 챗봇 모음
-Line Notify 서비스 종료에 따른 대처
+Chatbot 메시지 전송 라이브러리 모음
+
+- [설치 방법](#설치-방법)
+- [Bot](#bot)
+    - [support bot](#지원-봇)
+    - [Slack Bot](#slack-bot-라이브러리)
+    - [Mattermost Bot](#mattermost-bot-라이브러리)
 
 ## 설치 방법
 
@@ -10,11 +16,13 @@ npm install @chat-bots/chatbot
 모듈의 크기를 줄이려면 아래의 예시처럼 사용할 봇만 선택해 사용할 모듈만 설치하면 됩니다.
 ```bash
 npm install @chat-bots/slack
+npm install @chat-bots/mattermost
 ```
 
 ## Bot
 ### 지원 봇
 - slack
+- mattermost
 
 ### Slack Bot 라이브러리
 Block Kit을 지원하고 다양한 파일 포맷을 처리할 수 있습니다.
@@ -42,9 +50,10 @@ npm install @chat-bots/slack
 ##### 기본 설정
 
 ```typescript
-import chatSlack from '@chat-bots/slack';
+import axios from 'axios';
+import { chatSlack } from '@chat-bots/slack';
 
-const bot = new chatSlack("(SLACK_BOT_TOKEN)", "(SLACK_CHANNEL)");
+const bot = new chatSlack("(SLACK_BOT_TOKEN)", "(SLACK_CHANNEL)", axios);
 
 bot.sendChat("hi");
 ```
@@ -182,4 +191,19 @@ try {
     // 에러 처리
     // 에러 타입은 MainError 인터페이스에 정의되어 있습니다
 }
+```
+
+### Mattermost Bot 라이브러리
+
+#### 사용 방법
+
+##### 기본 설정
+
+```typescript
+import axios from 'axios';
+import { chatmm } from '@chat-bots/mattermost';
+
+const bot = new chatmm("(Mattermost Server url)", "(Mattermost token)", "(Mattermost channel_id)", axios);
+
+bot.sendChat("hi");
 ```

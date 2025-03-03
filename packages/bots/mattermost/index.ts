@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from "axios";
+import type { AxiosInstance, AxiosResponse } from 'axios'
 import * as deasync from "deasync";
 import WebSocket from "ws";
-import { InitWebSocketOptions, post_message_data, SendMessageOptions } from "./types/data";
+import { InitWebSocketOptions, post_message_data, SendMessageOptions, UpdateMessageOptions } from "./types/data";
 import { MM_API_POSTS } from "./types/api-response/posts";
 
 export { post_message_data, SendMessageOptions, MM_API_POSTS };
@@ -11,11 +11,13 @@ export class chatmm {
     private bot_token: string;
     private channelid: string;
     private ws: null|WebSocket;
+    private axios: AxiosInstance;
 
-    constructor(url:string, token:string, channelid:string) {
+    constructor(url:string, token:string, channelid:string, axios:AxiosInstance) {
         this.server_url = url;
         this.bot_token = token;
         this.channelid = channelid;
+        this.axios = axios;
     }
     
     public get url() : string {
@@ -36,7 +38,24 @@ export class chatmm {
             message: options.msg
         }
 
-        return axios.post(`${this.url}/api/v4/posts`, data, {
+        return this.axios.post(`${this.url}/api/v4/posts`, data, {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${this.bot_token}`,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+    }
+
+    update(options:UpdateMessageOptions) {
+        let data = {
+            id: options.post_id,
+            channel_id: this.channelid,
+            message: options.msg,
+            is_pinned: options.is_pinned
+        }
+
+        return this.axios.put(`${this.url}/api/v4/posts/${options.post_id}`, data, {
             headers: {
                 'Content-Type': "application/json",
                 'Authorization': `Bearer ${this.bot_token}`,
@@ -62,7 +81,7 @@ export class chatmm {
     }
 
     get(url:string) {
-        return axios.get(`${this.url}${url}`, {
+        return this.axios.get(`${this.url}${url}`, {
             headers: {
                 'Content-Type': "application/json",
                 'Authorization': `Bearer ${this.bot_token}`,
@@ -72,7 +91,7 @@ export class chatmm {
     }
 
     post(url:string, data:any) {
-        return axios.post(`${this.url}${url}`, data, {
+        return this.axios.post(`${this.url}${url}`, data, {
             headers: {
                 'Content-Type': "application/json",
                 'Authorization': `Bearer ${this.bot_token}`,

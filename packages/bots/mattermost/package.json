@@ -12,14 +12,9 @@
     "build": "tsc"
   },
   "license": "ISC",
-  "dependencies": {
-    "axios": "^1.4.0",
-    "deasync": "^0.1.30",
-    "ws": "^8.18.0"
-  },
-  "version": "0.0.11",
+  "version": "0.1.14",
   "keywords": [
-    "mattermost",
+    "slack",
     "bot",
     "api",
     "chatbot",
@@ -32,5 +27,15 @@
   },
   "bugs": {
     "url": "https://github.com/prjkmo112/chatbots/issues"
+  },
+  "dependencies": {
+    "async": "^3.2.4",
+    "ws": "^8.18.0",
+    "deasync": "^0.1.30"
+  },
+  "devDependencies": {
+    "@types/deasync": "^0.1.2",
+    "@types/ws": "8.5.4",
+    "@types/async": "^3.2.20"
   }
 }
