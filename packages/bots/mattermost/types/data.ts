@@ -8,6 +8,12 @@ export interface SendMessageOptions {
     msg: string;
 }
 
+export interface UpdateMessageOptions {
+    post_id: string;
+    msg: string;
+    is_pinned?: boolean;
+}
+
 export interface InitWebSocketOptions {
     botId?: string;
     messageHandler?: (post:any) => Promise<void>;
