@@ -1,5 +1,5 @@
 import { WebClient, ChatPostMessageResponse, ChatUpdateResponse } from '@slack/web-api';
-import axios, { AxiosResponse } from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 import deasync from 'deasync';
 import FormData from 'form-data';
 import { Filetypes } from './types/main';
@@ -14,11 +14,13 @@ export class chatSlack {
     private bot_token: string;
     private slack_channel: string;
     private slackBot: WebClient;
+    private axios: AxiosInstance;
     
-    constructor(bot_token:string, slack_channel:string) {
+    constructor(bot_token:string, slack_channel:string, axios:AxiosInstance) {
         this.bot_token = bot_token;
         this.slack_channel = slack_channel;
         this.slackBot = new WebClient(this.bot_token);
+        this.axios = axios;
     }
 
     sendChat(text:string):Promise<ChatPostMessageResponse> {
@@ -49,7 +51,7 @@ export class chatSlack {
         formdata.append('channels', process.env.SLACK_CHANNEL);
         formdata.append('content', content);
 
-        return axios.post('https://slack.com/api/files.upload', formdata)
+        return this.axios.post('https://slack.com/api/files.upload', formdata)
     }
 
     sendFileContentSync(filetype:Filetypes, fileName:string, content:any):void {
@@ -61,7 +63,7 @@ export class chatSlack {
         formdata.append('content', content);
 
         let done:boolean = false;
-        axios.post('https://slack.com/api/files.upload', formdata).then((res) => {
+        this.axios.post('https://slack.com/api/files.upload', formdata).then((res) => {
             done = true;
         }).catch((err) => {
             done = true;
