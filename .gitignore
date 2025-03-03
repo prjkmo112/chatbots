@@ -7,13 +7,12 @@ test*.Jenkinsfile
 
 dist/
 
-package-lock.json
-
 # 미완성 모듈
 cli/
 
 # 빌드 시에 생기는 파일들
 packages/**/README.md
 packages/**/.npmignore
+packages/**/package-lock.json
 
 test*
