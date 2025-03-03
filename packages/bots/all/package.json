@@ -16,7 +16,7 @@
     "@chat-bots/mattermost": "file:../mattermost",
     "@chat-bots/slack": "file:../slack"
   },
-  "version": "0.1.13",
+  "version": "0.1.14",
   "keywords": [
     "slack",
     "bot",

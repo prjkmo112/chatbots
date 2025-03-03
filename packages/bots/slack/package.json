@@ -12,7 +12,7 @@
     "build": "tsc"
   },
   "license": "ISC",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "gitHead": "127195bd3784ddf121ab15b3c5eef3333afbea70",
   "keywords": [
     "slack",
